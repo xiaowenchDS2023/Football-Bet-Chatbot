@@ -8,6 +8,12 @@ app = Flask(__name__)
 random_forest_model = joblib.load("final_random_forest_model.joblib")
 voting_regressor_model = joblib.load("voting_regressor_model.joblib")
 
+# 根路径，检查服务是否运行
+@app.route('/')
+def home():
+    return "Football Bet Chatbot API is running"
+
+# 分类预测端点
 @app.route('/predict_classification', methods=['POST'])
 def predict_classification():
     data = request.get_json()
@@ -19,6 +25,7 @@ def predict_classification():
     prediction = random_forest_model.predict(features)
     return jsonify({'classification_prediction': int(prediction[0])})
 
+# 回归预测端点
 @app.route('/predict_regression', methods=['POST'])
 def predict_regression():
     data = request.get_json()
